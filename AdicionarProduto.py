@@ -1,5 +1,6 @@
 from tkinter import *
 from Banco import *
+from Exito import *
 
 def add(event):
     nome = app.nomeEntry.get()
@@ -9,9 +10,11 @@ def add(event):
         float(preço)
         Banco.addProduto(Banco, nome, preço)
         app.window.destroy()
-        Exito(app.pai, True)
+        exitoTela = Exito
+        exitoTela.__init__(exitoTela, app.pai, "Produto adicionado com sucesso!")
     except ValueError:
-        Exito(app.window, False)
+        exitoTela = Exito
+        exitoTela.__init__(exitoTela, app.pai, "Erro ao adicionar produto!")
 
 
 class AdicionarProduto:
@@ -39,32 +42,18 @@ class AdicionarProduto:
         self.adicionarButton.bind("<Button-1>", add)
         self.adicionarButton.grid(row=2, column=1, pady=10)
 
+        larguraJanela = 300
+        alturaJanela = 100
+
+        largura = self.window.winfo_screenwidth()
+        altura = self.window.winfo_screenheight()
+
+        distanciaLateral = int((largura / 2) - (larguraJanela / 2))
+        distanciaSuperior = int((altura / 2) - (alturaJanela / 2))
+
         self.window.title("Adicionar Produto")
         self.window.resizable(0,0)
-        self.window.geometry("300x100")
+        self.window.geometry("{}x{}+{}+{}".format(larguraJanela, alturaJanela, distanciaLateral, distanciaSuperior))
         self.window.mainloop()
-
-class Exito:
-
-    def __init__(self, window, status):
-        self.window = Toplevel(window)
-
-        if status:
-            self.statusLabel = Label(self.window, text="Produto adicionado com exito!")
-            self.statusLabel.pack()
-        else:
-            self.statusLabel = Label(self.window, text="Erro ao adicionar produto!")
-            self.statusLabel.pack()
-
-        self.okButton = Button(self.window, text="Ok", command=self.okButtonCommand)
-        self.okButton.pack(pady=5, ipadx=30)
-
-        self.window.title("Status")
-        self.window.resizable(0,0)
-        self.window.geometry("200x60")
-        self.window.mainloop()
-
-    def okButtonCommand(self):
-        self.window.destroy()
 
 app = AdicionarProduto

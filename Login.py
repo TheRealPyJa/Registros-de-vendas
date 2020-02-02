@@ -1,8 +1,9 @@
 from tkinter import *
 from Principal import *
+from AlterarSenha import *
 
 def entrar(event):
-    arquivo = open("Login.txt", 'r')
+    arquivo = open("Login.config", 'r')
     linhas = arquivo.readlines()
     arquivo.close()
     login = str(loginWindow.usuario.get())
@@ -14,9 +15,8 @@ def entrar(event):
 
 def modificar(event):
     if app.usuario.get() == "Login" and app.senha.get() == "Password":
-        arquivo = open("Login.txt", "w")
-        arquivo.write("")
-        arquivo.close()
+        alterarSenhaJanela = AlterarSenha
+        alterarSenhaJanela.__init__(alterarSenhaJanela, app.window)
 
 class loginWindow:
 
@@ -46,9 +46,15 @@ class loginWindow:
         self.entra.bind("<Button-3>", modificar)
         self.entra.grid(row=3, column=1)
 
+        largura = self.window.winfo_screenwidth()
+        altura = self.window.winfo_screenheight()
+
+        distanciaLateral = int((largura / 2) - (200 / 2))
+        distanciaSuperior = int((altura / 2) - (80 / 2))
+
         self.window.title("Login")
         self.window.resizable(0,0)
-        self.window.geometry("200x80")
+        self.window.geometry("200x80+{}+{}".format(distanciaLateral, distanciaSuperior))
         self.window.mainloop()
 
 janela = Tk()
